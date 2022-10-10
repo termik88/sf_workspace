@@ -5,7 +5,7 @@
 import numpy as np
 
 
-def random_predict(number: int = 1) -> int:
+def random_predict(hidden_number: int = 1) -> int:
     """Рандомно угадываем число
 
     Args:
@@ -14,14 +14,26 @@ def random_predict(number: int = 1) -> int:
     Returns:
         int: Число попыток
     """
+    
     count = 0
-
+    min_r = 1
+    max_r = 101
+    
+    min_n = 1 # Минимальное значение рассматриваемого интервала
+    max_n = 100 # Максимальное значение рассматриваемого интервала
+    
+    predict_number = np.random.randint(min_r, max_r) # загадываем рандомное число, используя генератор рандомных чисел
     while True:
         count += 1
-        predict_number = np.random.randint(1, 101)  # предполагаемое число
-        if number == predict_number:
-            break  # выход из цикла если угадали
-    return count
+        if predict_number > hidden_number:
+            max_n = predict_number - 1
+            predict_number = min_n + (max_n - min_n) // 2
+        elif predict_number < hidden_number:
+            min_n = predict_number + 1
+            predict_number = min_n + (max_n - min_n) // 2
+        else:
+            break # конец игры и выход из цикла
+    return(count)
 
 
 def score_game(random_predict) -> int:
